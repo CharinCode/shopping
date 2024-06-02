@@ -10,10 +10,12 @@ const Products = () => {
   const search = useSelector((state) => state.search.search);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getProduct = async () => {
     const response = await axios.get("https://fakestoreapi.com/products");
     setProducts(response.data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -38,7 +40,9 @@ const Products = () => {
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="flex flex-wrap gap-10 justify-center lg:justify-start mx-6 my-10 ">
-        {filteredProducts.length === 0 ? (
+        {loading ? (
+          <h2 className="text-2xl">กำลังโหลดข้อมูล...</h2>
+        ) : filteredProducts.length === 0 ? (
           <h2 className="text-2xl">ไม่พบข้อมูล</h2>
         ) : (
           filteredProducts.map((product) => (
